@@ -48,10 +48,8 @@
     angle: Common.random(0, 360),
   })
   // 地面を用意
-  const ground = Bodies.rectangle(width / 2, 0, 80, 80, {
-    restitution: 0.8,
-    friction: 0.1,
-    angle: Common.random(0, 360),
+  const ground = Bodies.rectangle(width / 2, height, width, 50, {
+    isStatic: true,
   })
   // Boxと地面を配置する
   Composite.add(engine.world, [box, ground])
