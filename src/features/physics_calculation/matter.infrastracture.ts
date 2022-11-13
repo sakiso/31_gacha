@@ -32,25 +32,25 @@ function renderObject(callback: Function): void {
 
   // キャンバスのサイズ
   const width: number = 480
-  const height: number = 600
+  const height: number = 600 //todo: このへんの値はUIから受け取ったほうがいいかな
 
   // 画面を描画する
-  const render = Render.create({
-    element: document.body,
-    engine: engine,
-    options: {
-      width: width,
-      height: height,
-      showAngleIndicator: true,
-      showCollisions: true,
-      showDebug: false,
-      showIds: false,
-      showVelocity: true,
-      hasBounds: true,
-      wireframes: true, // Important!!
-    },
-  })
-  Render.run(render)
+  // const render = Render.create({
+  //   element: document.body,
+  //   engine: engine,
+  //   options: {
+  //     width: width,
+  //     height: height,
+  //     showAngleIndicator: true,
+  //     showCollisions: true,
+  //     showDebug: false,
+  //     showIds: false,
+  //     showVelocity: true,
+  //     hasBounds: true,
+  //     wireframes: true, // Important!!
+  //   },
+  // })
+  // // Render.run(render)
 
   // 落下するcircleを用意
   const circle = Bodies.circle(width / 2, 10, 60, {
@@ -79,7 +79,7 @@ function renderObject(callback: Function): void {
   Matter.Events.on(engine, 'afterUpdate', () => {
     callback(circle.position) // コールバック実行
     counter += 1
-    if (counter > 200) { // todo: あとで消す
+    if (counter > 180) { // todo: あとで消す
       Matter.Events.off(engine, 'afterUpdate')
     }
     last_position = Matter.Vector.clone(circle.position)

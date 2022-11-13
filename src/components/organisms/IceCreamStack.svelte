@@ -26,8 +26,7 @@
 </script>
 
 <div>
-  {iceCreamPosition.x}
-  {iceCreamPosition.y}
+  アイス座標 x: {iceCreamPosition.x} y: {iceCreamPosition.y}
   <ul>
     {#each flavors as flavor, i}
       <li>
@@ -39,7 +38,7 @@
   <img
     src="src/assets/image/flavors/キャラメルリボン.jpg"
     alt="アイス画像"
-    style="position: relative;
+    style="position: absolute;
   top: {iceCreamPositionY}px"
   />
 </div>
