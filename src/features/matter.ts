@@ -1,6 +1,8 @@
+// todo: オニオンアーキ的なディレクトリにうつす
 import Matter from 'matter-js'
+import img from './dummy.png'
 
-export function renderObject(): void {
+export function renderObject(path): void {
   // Matter.js
   // モジュール各種
   const Engine = Matter.Engine
@@ -16,6 +18,7 @@ export function renderObject(): void {
   const Events = Matter.Events
   const Mouse = Matter.Mouse
   const MouseConstraint = Matter.MouseConstraint
+  const World = Matter.World
 
   // 物理エンジン本体のクラス
   const engine = Engine.create()
@@ -34,7 +37,7 @@ export function renderObject(): void {
       showAngleIndicator: true,
       showCollisions: true,
       showDebug: false,
-      showIds: true,
+      showIds: false,
       showVelocity: true,
       hasBounds: true,
       wireframes: true, // Important!!
@@ -42,20 +45,35 @@ export function renderObject(): void {
   })
   Render.run(render)
 
-  // Boxを用意
-  const box = Bodies.rectangle(width / 2, 0, 80, 80, {
-    restitution: 0.8,
-    friction: 0.1,
-    angle: Common.random(0, 360),
+  // 落下するcircleを用意
+  const circle = Bodies.circle(width / 2, 10, 60, {
+    restitution: 0.8, // 反発係数
+    friction: 0.5, // 摩擦係数
+    timeScale: 1.5,
+    render: {
+      visible: true,
+      wireframes: false,
+      // todo: ↑までは設定が渡ってる 他のオプションが渡ってない？
+      sprite: {
+        texture: '/src/features/dummy.png',
+			},
+    }
   })
   // 地面を用意
   const ground = Bodies.rectangle(width / 2, height, width, 50, {
     isStatic: true,
   })
-  // Boxと地面を配置する
-  Composite.add(engine.world, [box, ground])
+
+  // circleと地面を配置する
+  Composite.add(engine.world, [circle, ground])
 
   // 物理世界の更新
   const runner = Runner.create()
   Runner.run(runner, engine)
+
+
+  // --
+  Matter.Events.on(engine, 'afterUpdate', () => {
+    console.log(circle.position)
+  })
 }
