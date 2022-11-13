@@ -79,7 +79,7 @@ function renderObject(callback: Function): void {
   Matter.Events.on(engine, 'afterUpdate', () => {
     callback(circle.position) // コールバック実行
     counter += 1
-    if (counter > 100) { // todo: あとで消す
+    if (counter > 200) { // todo: あとで消す
       Matter.Events.off(engine, 'afterUpdate')
     }
     last_position = Matter.Vector.clone(circle.position)

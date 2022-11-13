@@ -36,8 +36,10 @@
     {/each}
   </ul>
 
-  <button
+  <img
+    src="src/assets/image/flavors/キャラメルリボン.jpg"
+    alt="アイス画像"
     style="position: relative;
-  top: {iceCreamPositionY}px">●</button
-  >
+  top: {iceCreamPositionY}px"
+  />
 </div>
