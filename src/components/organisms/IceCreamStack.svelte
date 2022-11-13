@@ -10,8 +10,14 @@
   // data
   let iceCreamPosition: position = { x: 0, y: 0 }
   export let flavors: Array<String>
+  let iceCreamPositionX = 0
+  $: iceCreamPositionY = iceCreamPosition.y // todo: 分割代入リファクタする
 
   // main
+  // var iceCreamElement = document.getElementById('hoge')
+  // console.log('iceCreamElement')
+  // console.log(iceCreamElement)
+
   renderObject(updatePosition)
   function updatePosition(val: position) {
     console.log(val)
@@ -29,4 +35,9 @@
       </li>
     {/each}
   </ul>
+
+  <button
+    style="position: relative;
+  top: {iceCreamPositionY}px">●</button
+  >
 </div>
