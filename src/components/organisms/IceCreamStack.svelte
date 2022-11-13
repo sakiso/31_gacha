@@ -1,6 +1,16 @@
 <script lang="ts">
-  import { renderObject } from '../../features/matter'
-  renderObject('../../features/8591b64b500d-20220830.png')
+  // TODO: UIがインフラに直接アクセスしてるのでよくなさそう
+  import renderObject from '../../features/physics_calculation/matter.infrastracture'
+
+  // $: console.log(ice_cream_position)
+
+  renderObject(hoge)
+
+  function hoge(val) {
+    console.log('hoge実行')
+    console.log(val)
+  }
+
   // props
   export let flavors: Array<String>
 </script>

@@ -1,8 +1,14 @@
 // todo: オニオンアーキ的なディレクトリにうつす
+// TODO: AplicationServiveやDomainServiceの定義する型に依存するようにする
+// todo: ファイル名いい感じにする
 import Matter from 'matter-js'
-import img from './dummy.png'
 
-export function renderObject(path): void {
+interface position {
+  x: number,
+  y: number,
+}
+
+function renderObject(callback: Function): void {
   // Matter.js
   // モジュール各種
   const Engine = Matter.Engine
@@ -50,14 +56,7 @@ export function renderObject(path): void {
     restitution: 0.8, // 反発係数
     friction: 0.5, // 摩擦係数
     timeScale: 1.5,
-    render: {
-      visible: true,
-      wireframes: false,
-      // todo: ↑までは設定が渡ってる 他のオプションが渡ってない？
-      sprite: {
-        texture: '/src/features/dummy.png',
-			},
-    }
+    // NOTE: render.sprite.textureで画像パスを渡しても反映されなかった 理由不明
   })
   // 地面を用意
   const ground = Bodies.rectangle(width / 2, height, width, 50, {
@@ -71,15 +70,19 @@ export function renderObject(path): void {
   const runner = Runner.create()
   Runner.run(runner, engine)
 
-
   // 物理世界の座標送信
-  let last_position = {x: 0, y: 0}
+  let last_position: position = { x: 0, y: 0 }
   Matter.Events.on(engine, 'afterUpdate', () => {
-    if(Math.floor(last_position.x) === Math.floor(circle.position.x) &&
-    Math.floor(last_position.y) === Math.floor(circle.position.y)
-      ){
-      Matter.Events.off(engine, 'afterUpdate') // 物体が停止したらコールバック停止
+    callback(circle.position) // コールバック実行
+    if (
+      // 物体が停止したらコールバック停止
+      Math.floor(last_position.x) === Math.floor(circle.position.x) &&
+      Math.floor(last_position.y) === Math.floor(circle.position.y)
+    ) {
+      Matter.Events.off(engine, 'afterUpdate')
     }
     last_position = Matter.Vector.clone(circle.position)
   })
 }
+
+export default renderObject
