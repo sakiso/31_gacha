@@ -16,10 +16,47 @@
   const Mouse = Matter.Mouse
   const MouseConstraint = Matter.MouseConstraint
 
+  // 物理エンジン本体のクラス
+  const engine = Engine.create()
+
   // キャンバスのサイズ
-  // todo: 型を宣言するとunexpected tokenになる 調査する
-  const width = 480
-  const height = 600
+  const width: number = 480
+  const height: number = 600
+
+  // Boxを用意
+  const box = Bodies.rectangle(width / 2, 0, 80, 80, {
+    restitution: 0.8,
+    friction: 0.1,
+    angle: Common.random(0, 360),
+  })
+
+  // 地面を用意
+  const ground = Bodies.rectangle(width / 2, 0, 80, 80, {
+    restitution: 0.8,
+    friction: 0.1,
+    angle: Common.random(0, 360),
+  })
+
+  // Boxと地面を配置する
+  Composite.add(engine.world, [box, ground])
+
+  // 画面を描画するクラス
+  const render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+      width: width,
+      height: height,
+      showAngleIndicator: true,
+      showCollisions: true,
+      showDebug: false,
+      showIds: true,
+      showVelocity: true,
+      hasBounds: true,
+      wireframes: true, // Important!!
+    },
+  })
+  Render.run(render)
 
   // props
   export let flavors: Array<String>
