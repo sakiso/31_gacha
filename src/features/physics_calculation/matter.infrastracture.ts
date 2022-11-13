@@ -3,9 +3,10 @@
 // todo: ファイル名いい感じにする
 import Matter from 'matter-js'
 
-interface position {
-  x: number,
-  y: number,
+// これもExportしてviewで使うほうがいいかも
+export type position = {
+  x: number
+  y: number
 }
 
 function renderObject(callback: Function): void {
@@ -72,13 +73,13 @@ function renderObject(callback: Function): void {
 
   // 物理世界の座標送信
   let last_position: position = { x: 0, y: 0 }
+  // todo: 開発用にlogが出すぎてうざいので止めるためのカウンター
+  //       べつに本来止める必要ないと思うのであとで消す
+  let counter = 0
   Matter.Events.on(engine, 'afterUpdate', () => {
     callback(circle.position) // コールバック実行
-    if (
-      // 物体が停止したらコールバック停止
-      Math.floor(last_position.x) === Math.floor(circle.position.x) &&
-      Math.floor(last_position.y) === Math.floor(circle.position.y)
-    ) {
+    counter += 1
+    if (counter > 100) { // todo: あとで消す
       Matter.Events.off(engine, 'afterUpdate')
     }
     last_position = Matter.Vector.clone(circle.position)
