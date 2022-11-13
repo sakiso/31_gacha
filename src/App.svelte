@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TopPage from "./components/page/TopPage.svelte"
+  import TopPage from './pages/TopPage.svelte'
 </script>
 
 <TopPage />

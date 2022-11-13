@@ -20,6 +20,17 @@
   // todo: 型を宣言するとunexpected tokenになる 調査する
   const width = 480
   const height = 600
+
+  // props
+  export let flavors: Array<String>
 </script>
 
-<div>hoge</div>
+<div>
+  <ul>
+    {#each flavors as flavor, i}
+      <li>
+        {flavor}
+      </li>
+    {/each}
+  </ul>
+</div>
