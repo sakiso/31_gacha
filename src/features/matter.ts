@@ -72,8 +72,14 @@ export function renderObject(path): void {
   Runner.run(runner, engine)
 
 
-  // --
+  // 物理世界の座標送信
+  let last_position = {x: 0, y: 0}
   Matter.Events.on(engine, 'afterUpdate', () => {
-    console.log(circle.position)
+    if(Math.floor(last_position.x) === Math.floor(circle.position.x) &&
+    Math.floor(last_position.y) === Math.floor(circle.position.y)
+      ){
+      Matter.Events.off(engine, 'afterUpdate') // 物体が停止したらコールバック停止
+    }
+    last_position = Matter.Vector.clone(circle.position)
   })
 }
