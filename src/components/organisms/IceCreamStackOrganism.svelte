@@ -4,7 +4,10 @@
   import {
     renderObject,
     addObject,
+    removeCircle,
   } from '../../features/physics_calculation/matter.infrastracture'
+
+  import { onMount } from 'svelte'
 
   type iceCream = {
     // todo: 型って型っぽい命名したほうがいいかな？
@@ -21,22 +24,38 @@
   // data
   // let iceCreamPosition: position = { x: 0, y: 0 }
   let iceCreams: Array<iceCream> = []
+  $: iceCreamsCount = iceCreams.length || 0
+  let iceMenu: Array<String> = []
   // $: iceCreamPositionX = iceCreamPosition.x // todo: 分割代入リファクタする
   // $: iceCreamPositionY = iceCreamPosition.y // todo: 分割代入リファクタする
 
   // main
   renderObject()
 
+  // hook
+  onMount(async () => {
+    // jsonファイルからflavor名のArrayを作成
+    fetch('public/ice_menu.json')
+      .then((res) => res.json())
+      .then((data) => {
+        iceMenu = Object.keys(data)
+      })
+  })
+
   // methods
   function gacha() {
+    if (iceCreamsCount >= 5) {
+      return
+    }
+    const newIceCreamFlavor = sampleFromArray(iceMenu)
+
     // todo: これ処理切り出したい
     // todo: 最大5つまでにする
-    //todo: スコープ効いてるからリアクティブにならないとかあるか？
     let newIceCreamPositionX = 0
     let newIceCreamPositionY = 0
 
     let newIceCream: iceCream = {
-      flavor: 'hoge',
+      flavor: newIceCreamFlavor,
       position: { x: newIceCreamPositionX, y: newIceCreamPositionY },
     }
 
@@ -48,9 +67,19 @@
 
     function updatePosition(val: position) {
       newIceCream.position = val
-      // todo: iceCreams配列が更新されたことを伝えるトリガを引く
       triggerRefIceCreams()
     }
+  }
+
+  function reset() {
+    // todo: 物理世界もリセットしないといけない
+    iceCreams = []
+    removeCircle()
+  }
+
+  function sampleFromArray(targetArray: Array<any>) {
+    const targetIndex = Math.floor(Math.random() * targetArray.length)
+    return targetArray[targetIndex]
   }
 
   function triggerRefIceCreams() {
@@ -61,22 +90,29 @@
 
 <div>
   <button on:click={gacha}>ガチャ</button>
-  <ul>
-    {#each iceCreams as iceCream, i}
-      <li>
-        {iceCream.position.x}
-        {iceCream.position.y}
-      </li>
-    {/each}
-  </ul>
+  <button on:click={reset}>リセット</button>
 
   {#each iceCreams as iceCream, i}
     <img
-      src="src/assets/image/flavors/キャラメルリボン.png"
+      src="src/assets/image/flavors/{iceCream.flavor}.png"
       alt="アイス画像"
       style="position: absolute;
              top: {iceCream.position.y}px;
-             left:  {iceCream.position.x}px"
+             left: {iceCream.position.x}px;
+             width: 100px"
     />
   {/each}
+
+  <ul
+    style="
+    position: absolute;
+    top: 100px;
+    left:  500px"
+  >
+    {#each iceCreams as iceCream, i}
+      <li>
+        {iceCream.flavor}
+      </li>
+    {/each}
+  </ul>
 </div>

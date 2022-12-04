@@ -23,8 +23,8 @@ const World = Matter.World
 const engine = Engine.create()
 
 // キャンバスのサイズ
-const width: number = 300
-const height: number = 900 //todo: このへんの値はクラスにしてUIから受け取ったほうがいいかな
+const width: number = 145
+const height: number = 450 //todo: このへんの値はクラスにしてUIから受け取ったほうがいいかな
 
 // これもExportしてviewで使うほうがいいかも
 export type position = {
@@ -52,7 +52,7 @@ export function renderObject(): void {
   Render.run(render)
 
   // 地面を用意
-  const ground = Bodies.rectangle(width / 2, height, width, 50, {
+  const ground = Bodies.rectangle(width / 2, height, height , 50, {
     isStatic: true,
   })
 
@@ -65,11 +65,11 @@ export function renderObject(): void {
   })
 
   // コーンの傾斜を再現
-  const leftSlope = Bodies.rectangle(100, height, 400, 90, {
+  const leftSlope = Bodies.rectangle(20, height, 200, 90, {
     isStatic: true,
     angle: 45
   })
-  const rightSlope = Bodies.rectangle(width - 100, height, 400, 90, {
+  const rightSlope = Bodies.rectangle(width - 15, height, 200, 90, {
     isStatic: true,
     angle: 90
   })
@@ -84,10 +84,10 @@ export function renderObject(): void {
 
 export function addObject(callback: Function): void {
   // 物理世界に円を投下
-  const circle = Bodies.circle(width / 2, 10, 95, {
+  const circle = Bodies.circle(width / 2, 0, 45, {
     restitution: 0.9, // 反発係数
     friction: 0.5, // 摩擦係数
-    timeScale: 1.1,
+    timeScale: 1.0,
   })
 
   // 物理世界の座標送信
@@ -96,4 +96,11 @@ export function addObject(callback: Function): void {
   })
 
   Composite.add(engine.world, circle)
+}
+
+export function removeCircle(): void {
+  // 物理世界の円オブジェクトをすべて削除する
+  const allBodies = Matter.Composite.allBodies(engine.world)
+  const allCircles = allBodies.filter(el=> el.label === "Circle Body")
+  Composite.remove(engine.world, allCircles)
 }
