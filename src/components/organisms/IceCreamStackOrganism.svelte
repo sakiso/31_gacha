@@ -15,19 +15,19 @@
 
   // data
   let iceCreamPosition: position = { x: 0, y: 0 }
-  let flavors: Array<string> = ['first flavor']
+  let flavors: Array<string> = []
   $: iceCreamPositionX = iceCreamPosition.x // todo: 分割代入リファクタする
   $: iceCreamPositionY = iceCreamPosition.y // todo: 分割代入リファクタする
 
   // main
-  renderObject(updatePosition)
+  renderObject()
 
   // methods
   function gacha() {
     flavors = [...flavors, 'hoge']
 
     // 物理演算世界に円オブジェクトを投下
-    addObject()
+    addObject(updatePosition)
   }
   function updatePosition(val: position) {
     iceCreamPosition = val
