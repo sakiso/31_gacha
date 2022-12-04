@@ -1,5 +1,5 @@
 <script lang="ts">
-  import IceCreamStack from '../components/organisms/IceCreamStack.svelte'
+  import IceCreamStack from '../components/organisms/IceCreamStackOrganism.svelte'
   import { addObject } from '../features/physics_calculation/matter.infrastracture'
 
   // reactive data
