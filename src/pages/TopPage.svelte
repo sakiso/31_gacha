@@ -1,5 +1,6 @@
 <script lang="ts">
   import IceCreamStack from '../components/organisms/IceCreamStack.svelte'
+  import { addObject } from '../features/physics_calculation/matter.infrastracture'
 
   // reactive data
   let flavors: Array<string> = []
@@ -9,6 +10,9 @@
     console.log('ガチャ実行')
     flavors = [...flavors, 'hoge']
     console.log(flavors)
+
+    // 物理演算世界に円オブジェクトを投下
+    addObject()
   }
 </script>
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-  // TODO: UIがインフラに直接アクセスしてるのでよくなさそう
-  import renderObject from '../../features/physics_calculation/matter.infrastracture'
-  // todo: この型infraと共通化したい 切り出したい
+  // TODO: UIがインフラに直接アクセスしてるのでよくないのか？
+  import { renderObject } from '../../features/physics_calculation/matter.infrastracture'
   type position = {
+    // todo: この型infraと共通化したい 切り出したい
     x: number
     y: number
   }
