@@ -1,19 +1,8 @@
 <script lang="ts">
-  import IceCreamStack from '../components/organisms/IceCreamStackOrganism.svelte'
-  import { addObject } from '../features/physics_calculation/matter.infrastracture'
+  import IceCreamStackOrganism from '../components/organisms/IceCreamStackOrganism.svelte'
 
   // reactive data
   let flavors: Array<string> = []
-
-  // methods
-  function gacha() {
-    console.log('ガチャ実行')
-    flavors = [...flavors, 'hoge']
-    console.log(flavors)
-
-    // 物理演算世界に円オブジェクトを投下
-    addObject()
-  }
 </script>
 
 <h1>31ガチャ</h1>
@@ -25,8 +14,7 @@
     class="waffle_cone"
   />
 </div>
-<IceCreamStack {flavors} />
-<button on:click={gacha}>ガチャ</button>
+<IceCreamStackOrganism {flavors} />
 
 <style>
   .waffle_cone {
