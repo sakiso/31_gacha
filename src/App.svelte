@@ -4,5 +4,5 @@
 
 <TopPage />
 
-<style>
+<style scoped>
 </style>

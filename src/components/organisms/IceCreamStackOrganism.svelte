@@ -6,8 +6,9 @@
     addObject,
     removeCircle,
   } from '../../features/physics_calculation/matter.infrastracture'
-
   import { onMount } from 'svelte'
+  import Button, { Label } from '@smui/button'
+  import List, { Item, Text } from '@smui/list'
 
   type iceCream = {
     // todo: 型って型っぽい命名したほうがいいかな？
@@ -36,7 +37,7 @@
   // hook
   onMount(async () => {
     // jsonファイルからflavor名のArrayを作成
-    fetch('public/ice_menu.json')
+    fetch('ice_menu.json')
       .then((res) => res.json())
       .then((data) => {
         iceMenu = Object.keys(data)
@@ -89,34 +90,59 @@
   }
 </script>
 
-<div>
-  <button on:click={gacha}>ガチャ</button>
-  <button on:click={reset}>リセット</button>
-
+<main>
   {#each iceCreams as iceCream, i}
     <img
       src="src/assets/image/flavors/{iceCream.flavor}.png"
       alt="アイス画像"
       style="position: absolute;
-             top: {iceCream.position.y}px;
-             left: {iceCream.position.x}px;
+             top: {iceCream.position.y + 50}px;
+             left: {iceCream.position.x - 30}px;
              width: 100px"
     />
   {/each}
 
-  <ul class="ice-cream-flavors-list">
-    {#each ReversedIceCreams as iceCream, i}
-      <li>
-        {iceCream.flavor}
-      </li>
-    {/each}
-  </ul>
-</div>
+  <div class="ice-cream-flavors-list">
+    <List dense>
+      {#each ReversedIceCreams as iceCream, i}
+        <Item>
+          <Text>
+            {iceCream.flavor}
+          </Text>
+        </Item>
+      {/each}
+    </List>
+  </div>
+
+  <div class="gacha-button-container">
+    <Button variant="raised" on:click={gacha} class="button-shaped-round">
+      <Label>ガチャ</Label>
+    </Button>
+    <span class="spacer" />
+    <!-- ↑5回到達したらdisableに変える -->
+    <Button variant="outlined" color="secondary" on:click={reset}>
+      <Label>Reset</Label>
+    </Button>
+  </div>
+</main>
 
 <style scoped>
   .ice-cream-flavors-list {
     position: absolute;
-    top: 150px;
-    left: 190px;
+    top: 220px;
+    left: 175px;
+  }
+
+  .gacha-button-container {
+    position: absolute;
+    top: 700px;
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+  }
+
+  .spacer {
+    width: 15px;
   }
 </style>
