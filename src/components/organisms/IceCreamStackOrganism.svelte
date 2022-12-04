@@ -47,6 +47,7 @@
       await fetch(`image/flavors/${flavorName}.png`)
     })
     isImageLoading = false
+    // todo: これがtrueになるまでローディング画面だしたい
   })
 
   // methods
@@ -95,39 +96,44 @@
 </script>
 
 <main>
-  {#each iceCreams as iceCream, i}
-    <img
-      src="image/flavors/{iceCream.flavor}.png"
-      alt="アイス画像"
-      style="position: absolute;
+  {#if isImageLoading}
+    <div>Now Loading...</div>
+    <!-- todo: イケてるロードアイコン出したい -->
+  {:else}
+    {#each iceCreams as iceCream, i}
+      <img
+        src="image/flavors/{iceCream.flavor}.png"
+        alt="アイス画像"
+        style="position: absolute;
              top: {iceCream.position.y + 50}px;
              left: {iceCream.position.x - 30}px;
              width: 100px"
-    />
-  {/each}
+      />
+    {/each}
 
-  <div class="ice-cream-flavors-list">
-    <List dense>
-      {#each ReversedIceCreams as iceCream, i}
-        <Item>
-          <Text>
-            {iceCream.flavor}
-          </Text>
-        </Item>
-      {/each}
-    </List>
-  </div>
+    <div class="ice-cream-flavors-list">
+      <List dense>
+        {#each ReversedIceCreams as iceCream, i}
+          <Item>
+            <Text>
+              {iceCream.flavor}
+            </Text>
+          </Item>
+        {/each}
+      </List>
+    </div>
 
-  <div class="gacha-button-container">
-    <Button variant="raised" on:click={gacha} disabled={iceCreamsCount >= 5}>
-      <Label>ガチャ</Label>
-    </Button>
-    <span class="spacer" />
-    <!-- ↑5回到達したらdisableに変える -->
-    <Button variant="outlined" color="secondary" on:click={reset}>
-      <Label>Reset</Label>
-    </Button>
-  </div>
+    <div class="gacha-button-container">
+      <Button variant="raised" on:click={gacha} disabled={iceCreamsCount >= 5}>
+        <Label>ガチャ</Label>
+      </Button>
+      <span class="spacer" />
+      <!-- ↑5回到達したらdisableに変える -->
+      <Button variant="outlined" color="secondary" on:click={reset}>
+        <Label>Reset</Label>
+      </Button>
+    </div>
+  {/if}
 </main>
 
 <style scoped>
