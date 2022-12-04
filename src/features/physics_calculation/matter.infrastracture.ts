@@ -83,10 +83,11 @@ export function renderObject(): void {
 }
 
 export function addObject(callback: Function): void {
+  // 物理世界に円を投下
   const circle = Bodies.circle(width / 2, 10, 95, {
-    restitution: 0.8, // 反発係数
+    restitution: 0.9, // 反発係数
     friction: 0.5, // 摩擦係数
-    timeScale: 1.5,
+    timeScale: 1.1,
   })
 
   // 物理世界の座標送信

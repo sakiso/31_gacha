@@ -29,7 +29,8 @@
 
   // methods
   function gacha() {
-    // todo: 最大3つまでにする
+    // todo: これ処理切り出したい
+    // todo: 最大5つまでにする
     //todo: スコープ効いてるからリアクティブにならないとかあるか？
     let newIceCreamPositionX = 0
     let newIceCreamPositionY = 0
