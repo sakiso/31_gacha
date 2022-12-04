@@ -23,7 +23,7 @@ const World = Matter.World
 const engine = Engine.create()
 
 // キャンバスのサイズ
-const width: number = 330
+const width: number = 300
 const height: number = 900 //todo: このへんの値はクラスにしてUIから受け取ったほうがいいかな
 
 // これもExportしてviewで使うほうがいいかも
@@ -64,8 +64,18 @@ export function renderObject(): void {
     isStatic: true,
   })
 
+  // コーンの傾斜を再現
+  const leftSlope = Bodies.rectangle(100, height, 400, 90, {
+    isStatic: true,
+    angle: 45
+  })
+  const rightSlope = Bodies.rectangle(width - 100, height, 400, 90, {
+    isStatic: true,
+    angle: 90
+  })
+
   // circleと地面を配置する
-  Composite.add(engine.world, [ground, leftWall, rightWall])
+  Composite.add(engine.world, [ground, leftWall, rightWall, leftSlope, rightSlope])
 
   // 物理世界の更新
   const runner = Runner.create()

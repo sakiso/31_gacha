@@ -74,10 +74,8 @@
       src="src/assets/image/flavors/キャラメルリボン.jpg"
       alt="アイス画像"
       style="position: absolute;
-  top: {iceCream.position.y}px; left:  {iceCream.position.x}px"
+             top: {iceCream.position.y}px;
+             left:  {iceCream.position.x}px"
     />
   {/each}
 </div>
-
-<!--   top: {iceCream.position.y}px; left:  {iceCream.position.x}px"
- -->
