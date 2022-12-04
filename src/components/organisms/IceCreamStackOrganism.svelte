@@ -72,7 +72,7 @@
 
   {#each iceCreams as iceCream, i}
     <img
-      src="src/assets/image/flavors/キャラメルリボン.jpg"
+      src="src/assets/image/flavors/キャラメルリボン.png"
       alt="アイス画像"
       style="position: absolute;
              top: {iceCream.position.y}px;
