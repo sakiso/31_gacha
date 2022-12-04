@@ -3,7 +3,7 @@
 </script>
 
 <h1>31ガチャ</h1>
-<div>
+<div id="main-content">
   <img
     src="src/assets/image/waffle_cone_back.png"
     alt="ワッフルコーン(背面)"
@@ -19,7 +19,10 @@
   />
 </div>
 
-<style>
+<style scoped>
+  #main-content {
+    margin: auto;
+  }
   .waffle_cone {
     position: absolute;
     top: 397px;

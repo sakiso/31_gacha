@@ -25,6 +25,7 @@
   // let iceCreamPosition: position = { x: 0, y: 0 }
   let iceCreams: Array<iceCream> = []
   $: iceCreamsCount = iceCreams.length || 0
+  $: ReversedIceCreams = [...iceCreams].reverse() // メニューリストは逆順で表示したいので反転させる
   let iceMenu: Array<String> = []
   // $: iceCreamPositionX = iceCreamPosition.x // todo: 分割代入リファクタする
   // $: iceCreamPositionY = iceCreamPosition.y // todo: 分割代入リファクタする
@@ -103,16 +104,19 @@
     />
   {/each}
 
-  <ul
-    style="
-    position: absolute;
-    top: 100px;
-    left:  500px"
-  >
-    {#each iceCreams as iceCream, i}
+  <ul class="ice-cream-flavors-list">
+    {#each ReversedIceCreams as iceCream, i}
       <li>
         {iceCream.flavor}
       </li>
     {/each}
   </ul>
 </div>
+
+<style scoped>
+  .ice-cream-flavors-list {
+    position: absolute;
+    top: 150px;
+    left: 190px;
+  }
+</style>

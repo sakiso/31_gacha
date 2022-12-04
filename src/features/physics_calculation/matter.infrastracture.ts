@@ -33,23 +33,23 @@ export type position = {
 }
 
 export function renderObject(): void {
-  // 画面を描画する
-  const render = Render.create({
-    element: document.body,
-    engine: engine,
-    options: {
-      width: width,
-      height: height,
-      showAngleIndicator: true,
-      showCollisions: true,
-      showDebug: false,
-      showIds: false,
-      showVelocity: true,
-      hasBounds: true,
-      wireframes: true, // Important!!
-    },
-  })
-  Render.run(render)
+  // // 画面を描画する
+  // const render = Render.create({
+  //   element: document.body,
+  //   engine: engine,
+  //   options: {
+  //     width: width,
+  //     height: height,
+  //     showAngleIndicator: true,
+  //     showCollisions: true,
+  //     showDebug: false,
+  //     showIds: false,
+  //     showVelocity: true,
+  //     hasBounds: true,
+  //     wireframes: true, // Important!!
+  //   },
+  // })
+  // Render.run(render)
 
   // 地面を用意
   const ground = Bodies.rectangle(width / 2, height, height , 50, {
