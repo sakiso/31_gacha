@@ -1,8 +1,5 @@
 <script lang="ts">
   import IceCreamStackOrganism from '../components/organisms/IceCreamStackOrganism.svelte'
-
-  // reactive data
-  let flavors: Array<string> = []
 </script>
 
 <h1>31ガチャ</h1>
@@ -14,7 +11,7 @@
     class="waffle_cone"
   />
 </div>
-<IceCreamStackOrganism {flavors} />
+<IceCreamStackOrganism />
 
 <style>
   .waffle_cone {
