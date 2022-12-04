@@ -20,6 +20,7 @@
     "vite": "^3.2.3"
   },
   "dependencies": {
-    "matter-js": "^0.18.0"
+    "matter-js": "^0.18.0",
+    "svelte-material-ui": "6.2.0"
   }
 }
