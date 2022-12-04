@@ -13,14 +13,14 @@
   </TopAppBar>
   <div id="main-content">
     <img
-      src="src/assets/image/waffle_cone_back.png"
+      src="image/waffle_cone_back.png"
       alt="ワッフルコーン(背面)"
       height="300px"
       class="waffle_cone"
     />
     <IceCreamStackOrganism />
     <img
-      src="src/assets/image/waffle_cone_front.png"
+      src="image/waffle_cone_front.png"
       alt="ワッフルコーン(前面)"
       height="300px"
       class="waffle_cone"

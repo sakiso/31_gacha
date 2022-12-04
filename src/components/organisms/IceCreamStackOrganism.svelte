@@ -94,7 +94,7 @@
 <main>
   {#each iceCreams as iceCream, i}
     <img
-      src="src/assets/image/flavors/{iceCream.flavor}.png"
+      src="image/flavors/{iceCream.flavor}.png"
       alt="アイス画像"
       style="position: absolute;
              top: {iceCream.position.y + 50}px;
