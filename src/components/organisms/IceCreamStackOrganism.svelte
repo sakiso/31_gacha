@@ -23,13 +23,10 @@
   }
 
   // data
-  // let iceCreamPosition: position = { x: 0, y: 0 }
   let iceCreams: Array<iceCream> = []
   $: iceCreamsCount = iceCreams.length || 0
   $: ReversedIceCreams = [...iceCreams].reverse() // メニューリストは逆順で表示したいので反転させる
   let iceMenu: Array<String> = []
-  // $: iceCreamPositionX = iceCreamPosition.x // todo: 分割代入リファクタする
-  // $: iceCreamPositionY = iceCreamPosition.y // todo: 分割代入リファクタする
 
   // main
   renderObject()
@@ -65,7 +62,6 @@
     iceCreams = [...iceCreams, newIceCream]
 
     // 物理演算世界に円オブジェクトを投下
-    // todo: updatePositionには今回追加されたflavorオブジェクトを渡して、中でflavorsの位置を更新する
     addObject(updatePosition)
 
     function updatePosition(val: position) {
@@ -75,7 +71,6 @@
   }
 
   function reset() {
-    // todo: 物理世界もリセットしないといけない
     iceCreams = []
     removeCircle()
   }
