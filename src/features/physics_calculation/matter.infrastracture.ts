@@ -23,8 +23,8 @@ const World = Matter.World
 const engine = Engine.create()
 
 // キャンバスのサイズ
-const width: number = 180
-const height: number = 600 //todo: このへんの値はクラスにしてUIから受け取ったほうがいいかな
+const width: number = 330
+const height: number = 900 //todo: このへんの値はクラスにしてUIから受け取ったほうがいいかな
 
 // これもExportしてviewで使うほうがいいかも
 export type position = {
@@ -73,17 +73,15 @@ export function renderObject(): void {
 }
 
 export function addObject(callback: Function): void {
-  const circle = Bodies.circle(width / 2, 10, 60, {
+  const circle = Bodies.circle(width / 2, 10, 95, {
     restitution: 0.8, // 反発係数
     friction: 0.5, // 摩擦係数
     timeScale: 1.5,
   })
 
   // 物理世界の座標送信
-  let last_position: position = { x: 0, y: 0 }
   Matter.Events.on(engine, 'afterUpdate', () => {
     callback(circle.position) // コールバック実行
-    last_position = Matter.Vector.clone(circle.position)
   })
 
   Composite.add(engine.world, circle)
