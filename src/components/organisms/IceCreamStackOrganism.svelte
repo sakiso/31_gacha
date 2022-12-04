@@ -27,6 +27,7 @@
   $: iceCreamsCount = iceCreams.length || 0
   $: ReversedIceCreams = [...iceCreams].reverse() // メニューリストは逆順で表示したいので反転させる
   let iceMenu: Array<String> = []
+  let isImageLoading = true
 
   // main
   renderObject()
@@ -34,11 +35,18 @@
   // hook
   onMount(async () => {
     // jsonファイルからflavor名のArrayを作成
-    fetch('ice_menu.json')
+    await fetch('ice_menu.json')
       .then((res) => res.json())
       .then((data) => {
         iceMenu = Object.keys(data)
       })
+
+    // 前Flavorの画像を先読みしておく
+    // todo: 並列読み込みのpromise allみたいなので完了検知するようにしたい
+    iceMenu.forEach(async (flavorName) => {
+      await fetch(`image/flavors/${flavorName}.png`)
+    })
+    isImageLoading = false
   })
 
   // methods

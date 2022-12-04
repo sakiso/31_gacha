@@ -1,13 +1,6 @@
 <script lang="ts">
   import IceCreamStackOrganism from '../components/organisms/IceCreamStackOrganism.svelte'
   import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
-  import { onMount } from 'svelte'
-
-  // hook
-  // onMount(async () => {
-  //   // 画像フォルダを先読み
-  //   fetch('/image')
-  // })
 </script>
 
 <main>
