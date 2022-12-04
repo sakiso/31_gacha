@@ -35,22 +35,22 @@ function renderObject(callback: Function): void {
   const height: number = 600 //todo: このへんの値はUIから受け取ったほうがいいかな
 
   // 画面を描画する
-  // const render = Render.create({
-  //   element: document.body,
-  //   engine: engine,
-  //   options: {
-  //     width: width,
-  //     height: height,
-  //     showAngleIndicator: true,
-  //     showCollisions: true,
-  //     showDebug: false,
-  //     showIds: false,
-  //     showVelocity: true,
-  //     hasBounds: true,
-  //     wireframes: true, // Important!!
-  //   },
-  // })
-  // // Render.run(render)
+  const render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+      width: width,
+      height: height,
+      showAngleIndicator: true,
+      showCollisions: true,
+      showDebug: false,
+      showIds: false,
+      showVelocity: true,
+      hasBounds: true,
+      wireframes: true, // Important!!
+    },
+  })
+  Render.run(render)
 
   // 落下するcircleを用意
   const circle = Bodies.circle(width / 2, 10, 60, {
@@ -59,13 +59,29 @@ function renderObject(callback: Function): void {
     timeScale: 1.5,
     // NOTE: render.sprite.textureで画像パスを渡しても反映されなかった 理由不明
   })
+
+  const circle2 = Bodies.circle(width / 2, 10, 60, {
+    restitution: 0.8, // 反発係数
+    friction: 0.5, // 摩擦係数
+    timeScale: 1.5,
+    // NOTE: render.sprite.textureで画像パスを渡しても反映されなかった 理由不明
+  })
+
   // 地面を用意
   const ground = Bodies.rectangle(width / 2, height, width, 50, {
     isStatic: true,
   })
 
+  // 壁を用意
+  const leftWall = Bodies.rectangle(0, height/2, 15, height, {
+    isStatic: true,
+  })
+  const rightWall = Bodies.rectangle(width, height/2, 15, height, {
+    isStatic: true,
+  })
+
   // circleと地面を配置する
-  Composite.add(engine.world, [circle, ground])
+  Composite.add(engine.world, [circle, circle2, ground, leftWall, rightWall])
 
   // 物理世界の更新
   const runner = Runner.create()
@@ -79,7 +95,8 @@ function renderObject(callback: Function): void {
   Matter.Events.on(engine, 'afterUpdate', () => {
     callback(circle.position) // コールバック実行
     counter += 1
-    if (counter > 180) { // todo: あとで消す
+    if (counter > 180) {
+      // todo: あとで消す
       Matter.Events.off(engine, 'afterUpdate')
     }
     last_position = Matter.Vector.clone(circle.position)
