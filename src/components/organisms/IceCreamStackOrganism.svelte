@@ -1,5 +1,6 @@
 <script lang="ts">
   // TODO: UIがインフラに直接アクセスしてるのでよくないのか？
+  // todo: コードが関心事単位のまとまりになっていない。
   import {
     renderObject,
     addObject,
@@ -7,28 +8,27 @@
 
   type position = {
     // todo: この型infraと共通化したい 切り出したい
+    // todo: これをラップするアイスオブジェクトの情報全体の型も定義する。
     x: number
     y: number
   }
 
   // data
   let iceCreamPosition: position = { x: 0, y: 0 }
-  export let flavors: Array<String>
+  let flavors: Array<string> = ['first flavor']
   $: iceCreamPositionX = iceCreamPosition.x // todo: 分割代入リファクタする
   $: iceCreamPositionY = iceCreamPosition.y // todo: 分割代入リファクタする
 
+  // main
+  renderObject(updatePosition)
+
   // methods
   function gacha() {
-    console.log('ガチャ実行')
     flavors = [...flavors, 'hoge']
-    console.log(flavors)
 
     // 物理演算世界に円オブジェクトを投下
     addObject()
   }
-
-  // main
-  renderObject(updatePosition)
   function updatePosition(val: position) {
     iceCreamPosition = val
   }
@@ -36,7 +36,6 @@
 
 <div>
   <button on:click={gacha}>ガチャ</button>
-
   <ul>
     {#each flavors as flavor, i}
       <li>
@@ -45,10 +44,12 @@
     {/each}
   </ul>
 
-  <img
-    src="src/assets/image/flavors/キャラメルリボン.jpg"
-    alt="アイス画像"
-    style="position: absolute;
+  {#each flavors as flavor, i}
+    <img
+      src="src/assets/image/flavors/キャラメルリボン.jpg"
+      alt="アイス画像"
+      style="position: absolute;
   top: {iceCreamPositionY}px; left:  {iceCreamPositionX}px"
-  />
+    />
+  {/each}
 </div>
