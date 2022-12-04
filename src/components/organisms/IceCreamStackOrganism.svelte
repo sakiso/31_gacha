@@ -47,6 +47,7 @@
   // methods
   function gacha() {
     if (iceCreamsCount >= 5) {
+      // todo: iceCreamsCount >= 5 は上限個数みたい名前にして共通化
       return
     }
     const newIceCreamFlavor = sampleFromArray(iceMenu)
@@ -115,7 +116,7 @@
   </div>
 
   <div class="gacha-button-container">
-    <Button variant="raised" on:click={gacha} class="button-shaped-round">
+    <Button variant="raised" on:click={gacha} disabled={iceCreamsCount >= 5}>
       <Label>ガチャ</Label>
     </Button>
     <span class="spacer" />
