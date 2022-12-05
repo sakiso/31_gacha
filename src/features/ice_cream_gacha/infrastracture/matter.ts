@@ -1,30 +1,29 @@
-// todo: オニオンアーキ的なディレクトリにうつす
 // TODO: AplicationServiveやDomainServiceの定義する型に依存するようにする
 // todo: ファイル名いい感じにする
 import Matter from 'matter-js'
 // Matter.js
 // モジュール各種
 const Engine = Matter.Engine
-const Render = Matter.Render
+const Render = Matter.Render // 未使用
 const Runner = Matter.Runner
-const Body = Matter.Body
+const Body = Matter.Body // 未使用
 const Bodies = Matter.Bodies
-const Bounds = Matter.Bounds
-const Common = Matter.Common
+const Bounds = Matter.Bounds // 未使用
+const Common = Matter.Common // 未使用
 const Composite = Matter.Composite
-const Composites = Matter.Composites
-const Constraint = Matter.Constraint
-const Events = Matter.Events
-const Mouse = Matter.Mouse
-const MouseConstraint = Matter.MouseConstraint
-const World = Matter.World
+const Composites = Matter.Composites // 未使用
+const Constraint = Matter.Constraint // 未使用
+const Events = Matter.Events // 未使用
+const Mouse = Matter.Mouse // 未使用
+const MouseConstraint = Matter.MouseConstraint // 未使用
+const World = Matter.World // 未使用
 
 // 物理エンジン本体のクラス
 const engine = Engine.create()
 
-// キャンバスのサイズ
+// 物理世界のキャンバスのサイズ
 const width: number = 145
-const height: number = 450 //todo: このへんの値はクラスにしてUIから受け取ったほうがいいかな
+const height: number = 450
 
 // これもExportしてviewで使うほうがいいかも
 export type position = {
@@ -33,7 +32,7 @@ export type position = {
 }
 
 export function renderObject(): void {
-  // // 画面を描画する
+  // NOTE: 開発時に物理世界の画面を描画する場合は以下をコメント解除する
   // const render = Render.create({
   //   element: document.body,
   //   engine: engine,
@@ -56,7 +55,7 @@ export function renderObject(): void {
     isStatic: true,
   })
 
-  // 壁を用意
+  // 左右の壁を用意
   const leftWall = Bodies.rectangle(0, height / 2, 15, height, {
     isStatic: true,
   })
@@ -82,7 +81,7 @@ export function renderObject(): void {
   Runner.run(runner, engine)
 }
 
-export function addObject(callback: Function): void {
+export function addCircle(callback: Function): void {
   // 物理世界に円を投下
   const circle = Bodies.circle(width / 2, 0, 45, {
     restitution: 0.9, // 反発係数

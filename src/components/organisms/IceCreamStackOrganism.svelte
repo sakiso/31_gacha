@@ -1,31 +1,20 @@
 <script lang="ts">
-  // TODO: UIがインフラに直接アクセスしてるのでよくないのか？
   // todo: コードが関心事単位のまとまりになっていない。
   import {
     renderObject,
-    addObject,
+    addCircle,
     removeCircle,
-  } from '../../features/physics_calculation/matter.infrastracture'
+  } from '../../features/ice_cream_gacha/infrastracture/matter'
   import { onMount } from 'svelte'
   import Button, { Label } from '@smui/button'
   import List, { Item, Text } from '@smui/list'
-
-  type iceCream = {
-    // todo: 型って型っぽい命名したほうがいいかな？
-    // todo: 共通化する
-    flavor: string
-    position: position
-  }
-  type position = {
-    // todo: この型infraと共通化したい 切り出したい
-    x: number
-    y: number
-  }
+  import type { IceCream, Position } from '../../features/ice_cream_gacha/types'
+  const maxGachaTimes = 5
 
   // data
-  let iceCreams: Array<iceCream> = []
+  let iceCreams: Array<IceCream> = []
   $: iceCreamsCount = iceCreams.length || 0
-  $: ReversedIceCreams = [...iceCreams].reverse() // メニューリストは逆順で表示したいので反転させる
+  $: ReversedIceCreams = [...iceCreams].reverse() // メニューリストは逆順で表示したいので反転させている
   let iceMenu: Array<String> = []
   let isImageLoading = true
 
@@ -42,18 +31,16 @@
       })
 
     // 前Flavorの画像を先読みしておく
-    // todo: 並列読み込みのpromise allみたいなので完了検知するようにしたい
-    iceMenu.forEach(async (flavorName) => {
-      await fetch(`image/flavors/${flavorName}.png`)
-    })
-    isImageLoading = false
-    // todo: これがtrueになるまでローディング画面だしたい
+    await Promise.all(
+      iceMenu.map((flavorName) => {
+        fetch(`image/flavors/${flavorName}.png`)
+      })
+    ).then(() => (isImageLoading = false)) // todo: これがtrueになるまでかっこいいローディング画面だしたい
   })
 
   // methods
   function gacha() {
-    if (iceCreamsCount >= 5) {
-      // todo: iceCreamsCount >= 5 は上限個数みたい名前にして共通化
+    if (iceCreamsCount >= maxGachaTimes) {
       return
     }
     const newIceCreamFlavor = sampleFromArray(iceMenu)
@@ -63,7 +50,7 @@
     let newIceCreamPositionX = 0
     let newIceCreamPositionY = 0
 
-    let newIceCream: iceCream = {
+    let newIceCream: IceCream = {
       flavor: newIceCreamFlavor,
       position: { x: newIceCreamPositionX, y: newIceCreamPositionY },
     }
@@ -71,9 +58,9 @@
     iceCreams = [...iceCreams, newIceCream]
 
     // 物理演算世界に円オブジェクトを投下
-    addObject(updatePosition)
+    addCircle(updatePosition)
 
-    function updatePosition(val: position) {
+    function updatePosition(val: Position) {
       newIceCream.position = val
       triggerRefIceCreams()
     }
@@ -124,11 +111,14 @@
     </div>
 
     <div class="gacha-button-container">
-      <Button variant="raised" on:click={gacha} disabled={iceCreamsCount >= 5}>
+      <Button
+        variant="raised"
+        on:click={gacha}
+        disabled={iceCreamsCount >= maxGachaTimes}
+      >
         <Label>ガチャ</Label>
       </Button>
       <span class="spacer" />
-      <!-- ↑5回到達したらdisableに変える -->
       <Button variant="outlined" color="secondary" on:click={reset}>
         <Label>Reset</Label>
       </Button>
