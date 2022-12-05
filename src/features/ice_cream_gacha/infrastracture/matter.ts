@@ -1,7 +1,6 @@
 // TODO: AplicationServiveやDomainServiceの定義する型に依存するようにする
-// todo: ファイル名いい感じにする
 import Matter from 'matter-js'
-// Matter.js
+
 // モジュール各種
 const Engine = Matter.Engine
 const Render = Matter.Render // 未使用
@@ -25,13 +24,7 @@ const engine = Engine.create()
 const width: number = 145
 const height: number = 450
 
-// これもExportしてviewで使うほうがいいかも
-export type position = {
-  x: number
-  y: number
-}
-
-export function renderObject(): void {
+export function initMatterJs(): void {
   // NOTE: 開発時に物理世界の画面を描画する場合は以下をコメント解除する
   // const render = Render.create({
   //   element: document.body,

@@ -1,41 +1,39 @@
 <script lang="ts">
-  // todo: コードが関心事単位のまとまりになっていない。
   import {
-    renderObject,
+    initMatterJs,
     addCircle,
     removeCircle,
   } from '../../features/ice_cream_gacha/infrastracture/matter'
   import { onMount } from 'svelte'
   import Button, { Label } from '@smui/button'
   import List, { Item, Text } from '@smui/list'
-  import type { IceCream, Position } from '../../features/ice_cream_gacha/types'
-  const maxGachaTimes = 5
+  import type {
+    IceCream,
+    Position,
+    IceMenu,
+  } from '../../features/ice_cream_gacha/types/types'
+  import {
+    fetchAllFlavorImages,
+    fetchIceMenu,
+  } from '../../features/ice_cream_gacha/infrastracture/fetch_ice_menu_json'
+  import { IceCreamGachaService } from '../../features/ice_cream_gacha/ice_cream_gacha_service'
 
   // data
+  const maxGachaTimes = 5
   let iceCreams: Array<IceCream> = []
   $: iceCreamsCount = iceCreams.length || 0
   $: ReversedIceCreams = [...iceCreams].reverse() // メニューリストは逆順で表示したいので反転させている
-  let iceMenu: Array<String> = []
+  let iceMenu: IceMenu = []
   let isImageLoading = true
-
-  // main
-  renderObject()
+  $: iceCreamGachaService = new IceCreamGachaService(iceMenu)
 
   // hook
   onMount(async () => {
-    // jsonファイルからflavor名のArrayを作成
-    await fetch('ice_menu.json')
-      .then((res) => res.json())
-      .then((data) => {
-        iceMenu = Object.keys(data)
-      })
+    iceMenu = await fetchIceMenu()
+    // ガチャ結果を瞬時に描画するため、全Flavorの画像を先読みしておく
+    await fetchAllFlavorImages(iceMenu).then(() => (isImageLoading = false))
 
-    // 前Flavorの画像を先読みしておく
-    await Promise.all(
-      iceMenu.map((flavorName) => {
-        fetch(`image/flavors/${flavorName}.png`)
-      })
-    ).then(() => (isImageLoading = false)) // todo: これがtrueになるまでかっこいいローディング画面だしたい
+    initMatterJs()
   })
 
   // methods
@@ -43,41 +41,29 @@
     if (iceCreamsCount >= maxGachaTimes) {
       return
     }
-    const newIceCreamFlavor = sampleFromArray(iceMenu)
-
-    // todo: これ処理切り出したい
-    // todo: 最大5つまでにする
-    let newIceCreamPositionX = 0
-    let newIceCreamPositionY = 0
+    const newIceCreamFlavor = iceCreamGachaService.gacha()
 
     let newIceCream: IceCream = {
       flavor: newIceCreamFlavor,
-      position: { x: newIceCreamPositionX, y: newIceCreamPositionY },
+      position: { x: 0, y: 0 },
     }
+    iceCreams.push(newIceCream)
 
-    iceCreams = [...iceCreams, newIceCream]
-
-    // 物理演算世界に円オブジェクトを投下
-    addCircle(updatePosition)
-
-    function updatePosition(val: Position) {
+    // 物理演算世界にnewIceCreamに対応する円オブジェクトを投下し、
+    // callbackでアイスと円オブジェクトの位置情報を同期し続ける
+    addCircle((val: Position) => {
       newIceCream.position = val
-      triggerRefIceCreams()
-    }
+      triggerReactiveIceCreams()
+    })
   }
 
-  function reset() {
+  function resetGachaResult() {
     iceCreams = []
     removeCircle()
   }
 
-  function sampleFromArray(targetArray: Array<any>) {
-    const targetIndex = Math.floor(Math.random() * targetArray.length)
-    return targetArray[targetIndex]
-  }
-
-  function triggerRefIceCreams() {
-    // アイス配列を自身に再代入することで最新の配列の状態をDOMに伝える
+  function triggerReactiveIceCreams() {
+    // アイスを自分自身に再代入することでリアクティブトリガーを引く
     iceCreams = iceCreams
   }
 </script>
@@ -119,7 +105,7 @@
         <Label>ガチャ</Label>
       </Button>
       <span class="spacer" />
-      <Button variant="outlined" color="secondary" on:click={reset}>
+      <Button variant="outlined" color="secondary" on:click={resetGachaResult}>
         <Label>Reset</Label>
       </Button>
     </div>
