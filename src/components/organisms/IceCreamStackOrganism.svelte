@@ -17,6 +17,7 @@
     fetchIceMenu,
   } from '../../features/ice_cream_gacha/infrastracture/fetch_ice_menu_json'
   import { IceCreamGachaService } from '../../features/ice_cream_gacha/ice_cream_gacha_service'
+  import LoadingIcon from '../molecules/LoadingIcon.svelte'
 
   // data
   const maxGachaTimes = 5
@@ -70,8 +71,9 @@
 
 <main>
   {#if isImageLoading}
-    <div>Now Loading...</div>
-    <!-- todo: イケてるロードアイコン出したい -->
+    <div class="loading-icon">
+      <LoadingIcon />
+    </div>
   {:else}
     {#each iceCreams as iceCream, i}
       <img
@@ -113,6 +115,12 @@
 </main>
 
 <style scoped>
+  .loading-icon {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+  }
+
   .ice-cream-flavors-list {
     position: absolute;
     top: 220px;
