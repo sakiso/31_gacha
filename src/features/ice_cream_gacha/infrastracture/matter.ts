@@ -1,4 +1,3 @@
-// TODO: AplicationServiveやDomainServiceの定義する型に依存するようにする
 import Matter from 'matter-js'
 
 // モジュール各種
