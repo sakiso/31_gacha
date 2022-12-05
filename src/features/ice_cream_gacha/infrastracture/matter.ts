@@ -74,8 +74,11 @@ export function initMatterJs(): void {
 }
 
 export function addCircle(callback: Function): void {
+  // アイスの初期位置をキャンバス中央から左右50ずつランダムな箇所にする
+  const firstYPosition = (width / 2) - 25 + Math.floor(Math.random() * 51)
+
   // 物理世界に円を投下
-  const circle = Bodies.circle(width / 2, 0, 45, {
+  const circle = Bodies.circle(firstYPosition, 0, 45, {
     restitution: 0.9, // 反発係数
     friction: 0.5, // 摩擦係数
     timeScale: 1.0,
